@@ -1,0 +1,57 @@
++Representación gráfica del espectro de amplitud y fase
+ +
+ +Con el fin de trazar la am. Del espectro de fases de este tren de pulsos necesitamos evaluar Valores de Fn. 
+ +Debido a la división por condición cero que ocurrió arriba, necesitamos manejar el caso
+ +Para n = 0 por separado. Hay una serie de métodos para manejar esto. Un método es Evaluar los valores positivo, negativo y cero 
+ +de n por separado. En este caso trazaremos el espectro para -10 ≤ n ≤ 10 utilizando los siguientes comandos de MATLAB.
+ +
+ +>> clear
+ +>> nneg=-10:-1;
+ +>> npos=1:10;
+ +>> Fnneg=(1./(j*nneg*pi)).*(-3*exp(-j*nneg*6*pi/7)+2*exp(j*nneg*2*pi/7)+exp(-j*nneg*12*pi/7));
+ +>> Fnpos=(1./(j*npos*pi)).*(-3*exp(-j*npos*6*pi/7)+2*exp(j*npos*2*pi/7)+exp(-j*npos*12*pi/7));
+ +>> F0=10/7;
+ +>> n=[nneg, 0, npos];
+ +>> Fn=[Fnneg, F0, Fnpos];
+ +>> stem(n, abs(Fn))
+ +
+ +El espectro de fase puede entonces ser encontrado usando:
+ +
+ +>> stem(n,angle(Fn))
+ +
+ +En este ejemplo, la frecuencia fundamental, f0= 1/T = 1/7.
+ +Así, el espectro de amplitud puede También se representa frente a la frecuencia en Hz con:
+ +>> stem(n*(1/7),abs(Fn));
+ +
+ +
+ +Trazar funciones con Discontinuidades
+ +Trazar funciones con Discontinuidades
+ +Para observar la exactitud de una serie de Fourier truncada necesitamos trazarla junto con la Función exacta. 
+ +Hay muchos métodos para trazar la función exacta f (t). El seguimiento Método hace uso de operadores lógicos.
+ +
+ +>> t=-1:.01:6;
+ +>> fexact=4*(t<=3)-2*(t>=3);
+ +>> plot(t,fexact)
+ +
+ +Trazado de la serie Truncada de Fourier
+ +Podemos utilizar la serie de Fourier exponencial truncada como una aproximación a la función, f (t). recuerde que siempre 
+ +debemos utilizar un rango simétrico De n valores  (-n0≤n ≤n0) para obtener una funcion.  For n0= 3:
+ +
+ +>> clear
+ +>> nneg=-3:-1;
+ +>> npos=1:3;
+ +>> n=nneg;
+ +>> Fnneg=(1./(j*n*pi)).*(-3*exp(-j*n*6*pi/7)+2*exp(j*n*2*pi/7)+exp(-j*n*12*pi/7));
+ +>> n=npos;
+ +>> Fnpos=(1./(j*n*pi)).*(-3*exp(-j*n*6*pi/7)+2*exp(j*n*2*pi/7)+exp(-j*n*12*pi/7));
+ +>> F0=10/7;
+ +>> n=[nneg,0,npos];
+ +>> Fn=[Fnneg,F0,Fnpos];
+ +>> k=0;
+ +>> for t=-1:.01:6
+ +k=k+1;
+ +fapprox(k)=sum(Fn.*(exp(j*n*2*pi*t/7)));
+ +end
+ +>> t=-1:.01:6;
+ +>> fexact=4*(t<=3)-2*(t>=3);
+ +>> plot(t,fapprox,t,fexact)
